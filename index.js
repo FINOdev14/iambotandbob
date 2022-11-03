@@ -1,6 +1,13 @@
 //telegraf.js - v4.10.0, API de Telegram Bot
 const { Telegraf } = require('telegraf');
 require('dotenv').config();
+
+const { Animation } = require('@lottiefiles/lottie-js');
+// const lineStickerDownloder = require("line-sticker-downloder")
+const gulp = require('gulp')
+const gunzip = require('gulp-gunzip')
+const rename = require('gulp-rename')
+
 //módulo nativo de Node, parainteractuar con los archivos del sistema
 const fs = require('fs');
 // Cliente HTTP basado en promesas para node
@@ -123,24 +130,31 @@ bot.on('photo', (ctx) => {
 });
 
 bot.on('sticker', async (ctx) => {
-  console.log(ctx.update.message.sticker);
-  let nom = ctx.update.message.sticker.thumb.file_id;
-  // ctx.reply(nom.file_unique_id);
-  // console.log(JSON.stringify(nom));
-  // let stickerId = await ctx.telegram
-  //   .getCustomEmojiStickers([nom.file_unique_id])
-  //   .then((s) => {
-  //     //console.log(s);
-  //   });
-  //console.log(stickerId);
-  
 
-  ctx.telegram.getFileLink(nom).then(async (response) => {
-    console.log(response.href);
+  let nom = ctx.update.message.sticker;
+  // console.log(nom)
 
-    let stickerHref = response.href;
-    const chanel = client.channels.cache.get('1034132109587136655');
-    chanel.send(stickerHref);
+  fs.readFile('./lottie/file_0.json', function(err, buffer){
+    if(err) return
+    axios.post('https://html5animationtogif.com/api/uploadlottiejsonfile.ashx', {
+      FileData: buffer
+    }).then((resp)=>{
+      console.log(resp)
+    }).catch((err)=>{
+      console.log(err)
+    })
+    
+  })
+
+    
+    ctx.telegram.getFileLink(nom.file_id).then(async (response) => {
+      // console.log(response.href);
+      // lineStickerDownloder([response.href])
+      // ctx.sendAnimation(response.href)
+
+    // let stickerHref = response.href;
+    // const chanel = client.channels.cache.get('1034132109587136655');
+    // chanel.send(stickerHref);
   });
 });
 
@@ -165,3 +179,13 @@ client.login(
   );
 //inicializamos el bot de telegram
 bot.launch();
+
+/**{
+  "clientid": "9062",
+  "apikey": "42b5-b1be-459b-52b7-f12cbf6ef077",
+  "creativeid": "file_0_c8a74032",
+  "fps": 60,
+  "width": 512,  
+  "height": 512,  
+  "duration": 2.95
+}**/
