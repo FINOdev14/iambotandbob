@@ -1,6 +1,6 @@
 //telegraf.js - v4.10.0, API de Telegram Bot
 const { Telegraf } = require('telegraf');
-
+require('dotenv').config();
 //módulo nativo de Node, parainteractuar con los archivos del sistema
 const fs = require('fs');
 // Cliente HTTP basado en promesas para node
@@ -21,7 +21,7 @@ const client = new Client({
 });
 
 // Crea tu bot y agregamos el token de telegram
-const bot = new Telegraf('5628688765:AAHFttOtzqagrImAxSoKLsZyKuAyeCuSXRA');
+const bot = new Telegraf(process.env.TOKEN_TELEGRAM);
 //creamos una promesa para provar el token Devuelve información básica sobre el bot
 bot.telegram.getMe().then((botInfo) => {
   bot.options.username = botInfo.username;
@@ -161,7 +161,7 @@ bot.on('voice', (ctx) => {
 
 //el método login en client para iniciar sesión en el bot de Discord que creó, usando el token en el archivo
 client.login(
-  'MTAzNTE5NDgyNDk2MzM5NTY0NA.GsTrN-.IcUdzjFiACRwo6_qyU_NfJhH5IOMS0JeHwLmCI'
-);
+  process.env.TOKEN_DISCORD
+  );
 //inicializamos el bot de telegram
 bot.launch();
